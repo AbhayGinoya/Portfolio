@@ -101,18 +101,17 @@ function a11yProps(index) {
 }
 
 const techStacks = [
-  { icon: "html.svg", language: "HTML" },
-  { icon: "css.svg", language: "CSS" },
-  { icon: "javascript.svg", language: "JavaScript" },
-  { icon: "tailwind.svg", language: "Tailwind CSS" },
-  { icon: "reactjs.svg", language: "ReactJS" },
-  { icon: "vite.svg", language: "Vite" },
-  { icon: "nodejs.svg", language: "Node JS" },
-  { icon: "bootstrap.svg", language: "Bootstrap" },
-  { icon: "firebase.svg", language: "Firebase" },
-  { icon: "MUI.svg", language: "Material UI" },
-  { icon: "vercel.svg", language: "Vercel" },
-  { icon: "SweetAlert.svg", language: "SweetAlert2" },
+  { icon: "assets/images/flutter.svg", language: "Flutter" },
+  { icon: "assets/images/dart.svg", language: "Dart" },
+  { icon: "assets/images/kotlin.svg", language: "Kotlin" },
+  { icon: "assets/images/swift.svg", language: "Swift" },
+  { icon: "assets/images/html.svg", language: "HTML" },
+  { icon: "assets/images/css.svg", language: "CSS" },
+  { icon: "assets/images/javascript.svg", language: "JavaScript" },
+  { icon: "assets/images/reactjs.svg", language: "ReactJS" },
+  { icon: "assets/images/nodejs.svg", language: "Node JS" },
+  { icon: "assets/images/firebase.svg", language: "Firebase" },
+  { icon: "assets/images/MUI.svg", language: "Material UI" },
 ];
 
 export default function FullWidthTabs() {
