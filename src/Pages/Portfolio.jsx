@@ -306,7 +306,9 @@ export default function FullWidthTabs() {
                       Img={project.Img}
                       Title={project.Title}
                       Description={project.Description}
-                      Link={project.PlayStoreLink}
+                      AppStoreLink={project.AppStoreLink}
+                      PlayStoreLink={project.PlayStoreLink}
+                      Link={project.Link}
                       id={project.id}
                     />
                   </div>

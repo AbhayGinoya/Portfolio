@@ -2,10 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ExternalLink, ArrowRight } from 'lucide-react';
 
-const CardProject = ({ Img, Title, Description, Link: ProjectLink, id }) => {
-  // Handle kasus ketika ProjectLink kosong
+const CardProject = ({ Img, Title, Description,  AppStoreLink,  PlayStoreLink,  ProjectLink, id }) => {
+  // Handle AppStore, PlayStore And ProjectLink
   const handleLiveDemo = (e) => {
-    if (!ProjectLink) {
+    if (!PlayStoreLink) {
       console.log("ProjectLink not available");
       e.preventDefault();
       alert("Live demo link is not available");
@@ -44,9 +44,11 @@ const CardProject = ({ Img, Title, Description, Link: ProjectLink, id }) => {
             </p>
 
             <div className="pt-4 flex items-center justify-between">
-              {ProjectLink ? (
+
+            {/* Project Store Button */}
+            {ProjectLink && (
                 <a
-                href={ProjectLink || "#"}
+                  href={ProjectLink}
                   target="_blank"
                   rel="noopener noreferrer"
                   onClick={handleLiveDemo}
@@ -55,11 +57,35 @@ const CardProject = ({ Img, Title, Description, Link: ProjectLink, id }) => {
                   <span className="text-sm font-medium">Live Demo</span>
                   <ExternalLink className="w-4 h-4" />
                 </a>
-              ) : (
-                <span className="text-gray-500 text-sm">Demo Not Available</span>
               )}
-              
-     
+
+
+            {/* Play Store Button */}
+            {PlayStoreLink && (
+                <a
+                  href={PlayStoreLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center space-x-2 text-blue-400 hover:text-blue-300 transition-colors duration-200"
+                >
+                  <span className="text-sm font-medium">Play Store</span>
+                  <ExternalLink className="w-4 h-4" />
+                </a>
+              )}
+
+              {/* App Store Button */}
+              {AppStoreLink && (
+                <a
+                  href={AppStoreLink}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center space-x-2 text-blue-400 hover:text-blue-300 transition-colors duration-200"
+                >
+                  <span className="text-sm font-medium">App Store</span>
+                  <ExternalLink className="w-4 h-4" />
+                </a>
+              )}
+
 
               {id ? (
                 <Link
@@ -74,6 +100,8 @@ const CardProject = ({ Img, Title, Description, Link: ProjectLink, id }) => {
                 <span className="text-gray-500 text-sm">Details Not Available</span>
               )}
             </div>
+
+
           </div>
           
           <div className="absolute inset-0 border border-white/0 group-hover:border-purple-500/50 rounded-xl transition-colors duration-300 -z-50"></div>
