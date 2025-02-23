@@ -3,6 +3,7 @@ import { Github, Linkedin, Mail, ExternalLink, Instagram, Sparkles } from "lucid
 import { DotLottieReact } from '@lottiefiles/dotlottie-react'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
+import { Padding } from "@mui/icons-material"
 
 // Memoized Components
 const StatusBadge = memo(() => (
@@ -162,9 +163,9 @@ const Home = () => {
         <div className="container mx-auto px-[5%] sm:px-6 lg:px-[0%] min-h-screen">
           <div className="flex flex-col lg:flex-row items-center justify-center h-screen md:justify-between gap-0 sm:gap-12 lg:gap-20">
             {/* Left Column */}
-            <div className="w-full lg:w-1/2 space-y-6 sm:space-y-8 text-left lg:text-left order-1 lg:order-1 lg:mt-0"
-              data-aos="fade-right"
-              data-aos-delay="200">
+              <div className="w-full lg:w-1/2 space-y-6 sm:space-y-8 text-left !pl-6 order-1 lg:order-1 lg:mt-0"
+                data-aos="fade-right"
+                data-aos-delay="200">
               <div className="space-y-4 sm:space-y-6">
                 <StatusBadge />
                 <MainTitle />

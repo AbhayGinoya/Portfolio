@@ -3,14 +3,7 @@ import { Link } from 'react-router-dom';
 import { ExternalLink, ArrowRight } from 'lucide-react';
 
 const CardProject = ({ Img, Title, Description,  AppStoreLink,  PlayStoreLink,  ProjectLink, id }) => {
-  // Handle AppStore, PlayStore And ProjectLink
-  const handleLiveDemo = (e) => {
-    if (!PlayStoreLink) {
-      console.log("ProjectLink not available");
-      e.preventDefault();
-      alert("Live demo link is not available");
-    }
-  };
+
   const handleDetails = (e) => {
     if (!id) {
       console.log("ID not available");
@@ -51,7 +44,6 @@ const CardProject = ({ Img, Title, Description,  AppStoreLink,  PlayStoreLink,  
                   href={ProjectLink}
                   target="_blank"
                   rel="noopener noreferrer"
-                  onClick={handleLiveDemo}
                   className="inline-flex items-center space-x-2 text-blue-400 hover:text-blue-300 transition-colors duration-200"
                 >
                   <span className="text-sm font-medium">Live Demo</span>
@@ -103,7 +95,6 @@ const CardProject = ({ Img, Title, Description,  AppStoreLink,  PlayStoreLink,  
 
 
           </div>
-          
           <div className="absolute inset-0 border border-white/0 group-hover:border-purple-500/50 rounded-xl transition-colors duration-300 -z-50"></div>
         </div>
       </div>
