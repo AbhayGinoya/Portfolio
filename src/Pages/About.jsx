@@ -112,6 +112,18 @@ const StatCard = memo(({ icon: Icon, color, value, label, description, animation
   </div>
 ));
 
+
+
+const handleDownload = () => {
+  const pdfUrl = "assets/Abhay Profile Flutter.pdf";
+  const link = document.createElement("a");
+  link.href = pdfUrl;
+  link.download = "AbhayGinoya-Flutter.pdf"; // specify the filename
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
 const AboutPage = () => {
   // Memoized calculations
   const { totalProjects, totalCertificates, YearExperience } = useMemo(() => {
@@ -182,6 +194,7 @@ const AboutPage = () => {
     },
   ], [totalProjects, totalCertificates, YearExperience]);
 
+
   return (
     <div
       className="h-auto pb-[10%] text-white overflow-hidden px-[5%] sm:px-[5%] lg:px-[10%] mt-10 sm-mt-0" 
@@ -219,15 +232,14 @@ const AboutPage = () => {
             </p>
 
             <div className="flex flex-col lg:flex-row items-center lg:items-start gap-4 lg:gap-4 lg:px-0 w-full">
-              <a href="https://drive.google.com/drive/folders/1BOm51Grsabb3zj6Xk27K-iRwI1zITcpo" className="w-full lg:w-auto">
               <button 
                 data-aos="fade-up"
                 data-aos-duration="800"
                 className="w-full lg:w-auto sm:px-6 py-2 sm:py-3 rounded-lg bg-gradient-to-r from-[#6366f1] to-[#a855f7] text-white font-medium transition-all duration-300 hover:scale-105 flex items-center justify-center lg:justify-start gap-2 shadow-lg hover:shadow-xl animate-bounce-slow"
+                onClick={()=> handleDownload()}
               >
                 <FileText className="w-4 h-4 sm:w-5 sm:h-5" /> Download CV
               </button>
-              </a>
               <a href="#Portfolio" className="w-full lg:w-auto">
               <button 
                 data-aos="fade-up"
