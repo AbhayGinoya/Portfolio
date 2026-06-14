@@ -9,6 +9,9 @@ import Portfolio from "./Pages/Portfolio";
 import ContactPage from "./Pages/Contact";
 import ProjectDetails from "./components/ProjectDetail";
 import WelcomeScreen from "./Pages/WelcomeScreen";
+import Timeline from "./components/Timeline";
+import Services from "./components/Services";
+import Testimonials from "./components/Testimonials";
 import { AnimatePresence } from 'framer-motion';
 
 const LandingPage = ({ showWelcome, setShowWelcome }) => {
@@ -26,15 +29,15 @@ const LandingPage = ({ showWelcome, setShowWelcome }) => {
           <AnimatedBackground />
           <Home />
           <About />
+          <Timeline />
+          <Services />
           <Portfolio />
+          <Testimonials />
           <ContactPage />
-          <footer>
+          <footer className="bg-slate-100 dark:bg-black/45 transition-colors duration-300 py-6 border-t border-slate-200 dark:border-white/5">
             <center>
-              <hr className="my-3 border-gray-400 opacity-15 sm:mx-auto lg:my-6 text-center" />
-              <span className="block text-sm pb-4 text-gray-500 text-center dark:text-gray-400">
-                © 2025{" "}
-                  Abhay Ginoya
-                . All Rights Reserved.
+              <span className="block text-sm text-slate-500 dark:text-slate-400 text-center">
+                © 2026 Abhay Ginoya. All Rights Reserved.
               </span>
             </center>
           </footer>
@@ -47,13 +50,10 @@ const LandingPage = ({ showWelcome, setShowWelcome }) => {
 const ProjectPageLayout = () => (
   <>
     <ProjectDetails />
-    <footer>
+    <footer className="bg-slate-100 dark:bg-black/45 transition-colors duration-300 py-6 border-t border-slate-200 dark:border-white/5">
       <center>
-        <hr className="my-3 border-gray-400 opacity-15 sm:mx-auto lg:my-6 text-center" />
-        <span className="block text-sm pb-4 text-gray-500 text-center dark:text-gray-400">
-          © 2025{" "}
-            Abhay Ginoya
-          . All Rights Reserved.
+        <span className="block text-sm text-slate-500 dark:text-slate-400 text-center">
+          © 2026 Abhay Ginoya. All Rights Reserved.
         </span>
       </center>
     </footer>

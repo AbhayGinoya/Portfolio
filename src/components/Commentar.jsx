@@ -1,233 +1,217 @@
 import React, { useState, useEffect, useRef, useCallback, memo } from 'react';
 import { getDocs, addDoc, collection, onSnapshot, query, orderBy, serverTimestamp } from 'firebase/firestore';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
-import { db, storage } from '../firebase-comment';
-import { MessageCircle, UserCircle2, Loader2, AlertCircle, Send, ImagePlus, X } from 'lucide-react';
+import { db } from '../firebase-comment';
+import { MessageCircle, UserCircle2, Loader2, AlertCircle, Send } from 'lucide-react';
 import AOS from "aos";
 import "aos/dist/aos.css";
 
-const Comment = memo(({ comment, formatDate, index }) => (
-    <div 
-        className="px-4 pt-4 pb-2 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all group hover:shadow-lg hover:-translate-y-0.5"
-        
-    >
-        <div className="flex items-start gap-3 ">
-                <div className="p-2 rounded-full bg-indigo-500/20 text-indigo-400 group-hover:bg-indigo-500/30 transition-colors">
-                    <UserCircle2 className="w-5 h-5" />
-                </div>
-            <div className="flex-grow min-w-0">
-                <div className="flex items-center justify-between gap-4 mb-2">
-                    <h4 className="font-medium text-white truncate">{comment.userName}</h4>
-                    <span className="text-xs text-gray-400 whitespace-nowrap">
-                        {formatDate(comment.createdAt)}
-                    </span>
-                </div>
-                <p className="text-gray-300 text-sm break-words leading-relaxed relative bottom-2">{comment.content}</p>
-            </div>
+const Comment = memo(({ comment, formatDate }) => (
+  <div className="p-4 rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-150 dark:border-white/5 hover:bg-slate-100/50 dark:hover:bg-white/10 transition-all duration-200 group">
+    <div className="flex items-start gap-3">
+      <div className="p-2 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 group-hover:bg-indigo-100 dark:group-hover:bg-indigo-500/20 transition-colors">
+        <UserCircle2 className="w-5 h-5" />
+      </div>
+      <div className="flex-grow min-w-0">
+        <div className="flex items-center justify-between gap-4 mb-1">
+          <h4 className="font-bold text-slate-800 dark:text-white text-sm truncate">{comment.userName}</h4>
+          <span className="text-[10px] font-semibold text-slate-400 dark:text-slate-500 whitespace-nowrap">
+            {formatDate(comment.createdAt)}
+          </span>
         </div>
+        <p className="text-slate-600 dark:text-slate-300 text-xs sm:text-sm break-words leading-relaxed">
+          {comment.content}
+        </p>
+      </div>
     </div>
+  </div>
 ));
 
-const CommentForm = memo(({ onSubmit, isSubmitting, error }) => {
-    const [newComment, setNewComment] = useState('');
-    const [userName, setUserName] = useState('');
-    const textareaRef = useRef(null);
+const CommentForm = memo(({ onSubmit, isSubmitting }) => {
+  const [newComment, setNewComment] = useState('');
+  const [userName, setUserName] = useState('');
+  const textareaRef = useRef(null);
 
-    const handleTextareaChange = useCallback((e) => {
-        setNewComment(e.target.value);
-        if (textareaRef.current) {
-            textareaRef.current.style.height = 'auto';
-            textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
-        }
-    }, []);
+  const handleTextareaChange = useCallback((e) => {
+    setNewComment(e.target.value);
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+    }
+  }, []);
 
-    const handleSubmit = useCallback((e) => {
-        e.preventDefault();
-        if (!newComment.trim() || !userName.trim()) return;
-        
-        onSubmit({ newComment, userName });
-        setNewComment('');
-        if (textareaRef.current) textareaRef.current.style.height = 'auto';
-    }, [newComment, userName, onSubmit]);
+  const handleSubmit = useCallback((e) => {
+    e.preventDefault();
+    if (!newComment.trim() || !userName.trim()) return;
+    
+    onSubmit({ newComment, userName });
+    setNewComment('');
+    if (textareaRef.current) textareaRef.current.style.height = 'auto';
+  }, [newComment, userName, onSubmit]);
 
-    return (
-        <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="space-y-2" data-aos="fade-up" data-aos-duration="1000">
-                <label className="block text-sm font-medium text-white">
-                    Name <span className="text-red-400">*</span>
-                </label>
-                <input
-                    type="text"
-                    value={userName}
-                    onChange={(e) => setUserName(e.target.value)}z
-                    placeholder="Enter your name"
-                    className="w-full p-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all"
-                    required
-                />
-            </div>
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="space-y-1">
+        <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+          Name <span className="text-red-500">*</span>
+        </label>
+        <input
+          type="text"
+          value={userName}
+          onChange={(e) => setUserName(e.target.value)}
+          placeholder="Your display name"
+          className="w-full p-3 text-xs sm:text-sm rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-gray-500 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10 transition-all duration-300"
+          required
+        />
+      </div>
 
-            <div className="space-y-2" data-aos="fade-up" data-aos-duration="1200">
-                <label className="block text-sm font-medium text-white">
-                    Message <span className="text-red-400">*</span>
-                </label>
-                <textarea
-                    ref={textareaRef}
-                    value={newComment}
-                    onChange={handleTextareaChange}
-                    placeholder="Write your message here..."
-                    className="w-full p-4 rounded-xl bg-white/5 border border-white/10 text-white placeholder-gray-400 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 transition-all resize-none min-h-[120px]"
-                    required
-                />
-            </div>
+      <div className="space-y-1">
+        <label className="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+          Comment / Feedback <span className="text-red-500">*</span>
+        </label>
+        <textarea
+          ref={textareaRef}
+          value={newComment}
+          onChange={handleTextareaChange}
+          placeholder="Leave a message or feedback..."
+          className="w-full p-4 text-xs sm:text-sm rounded-xl bg-slate-50 dark:bg-white/5 border border-slate-200 dark:border-white/10 text-slate-800 dark:text-white placeholder-slate-400 dark:placeholder-gray-500 focus:outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/10 transition-all duration-300 resize-none min-h-[90px]"
+          required
+        />
+      </div>
 
-            <button
-                type="submit"
-                disabled={isSubmitting}
-                data-aos="fade-up" data-aos-duration="1000"
-                className="relative w-full h-12 bg-gradient-to-r from-[#6366f1] to-[#a855f7] rounded-xl font-medium text-white overflow-hidden group transition-all duration-300 hover:scale-[1.02] hover:shadow-lg active:scale-[0.98] disabled:opacity-50 disabled:hover:scale-100 disabled:cursor-not-allowed"
-            >
-                <div className="absolute inset-0 bg-white/20 translate-y-12 group-hover:translate-y-0 transition-transform duration-300" />
-                <div className="relative flex items-center justify-center gap-2">
-                    {isSubmitting ? (
-                        <>
-                            <Loader2 className="w-4 h-4 animate-spin" />
-                            <span>Posting...</span>
-                        </>
-                    ) : (
-                        <>
-                            <Send className="w-4 h-4" />
-                            <span>Post Comment</span>
-                        </>
-                    )}
-                </div>
-            </button>
-        </form>
-    );
+      <button
+        type="submit"
+        disabled={isSubmitting}
+        className="relative w-full h-11 bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-700 hover:to-cyan-600 rounded-xl font-bold text-white text-xs sm:text-sm flex items-center justify-center gap-2 transition-all duration-300 hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50 disabled:cursor-not-allowed"
+      >
+        {isSubmitting ? (
+          <>
+            <Loader2 className="w-4 h-4 animate-spin" />
+            <span>Posting...</span>
+          </>
+        ) : (
+          <>
+            <Send className="w-4 h-4" />
+            <span>Post Comment</span>
+          </>
+        )}
+      </button>
+    </form>
+  );
 });
 
 const Commenter = () => {
-    const [comments, setComments] = useState([]);
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [error, setError] = useState('');
+  const [comments, setComments] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState('');
 
-    useEffect(() => {
-        // Initialize AOS
-        AOS.init({
-            once: false,
-            duration: 1000,
-        });
-    }, []);
+  useEffect(() => {
+    AOS.init({ once: false });
+  }, []);
 
-    useEffect(() => {
-        const commentsRef = collection(db, 'portfolio-comments');
-        const q = query(commentsRef, orderBy('createdAt', 'desc'));
-        return onSnapshot(q, (querySnapshot) => {
-            const commentsData = querySnapshot.docs.map((doc) => ({
-                id: doc.id,
-                ...doc.data(),
-            }));
-            setComments(commentsData);
-        });
-    }, []);
+  useEffect(() => {
+    const commentsRef = collection(db, 'portfolio-comments');
+    const q = query(commentsRef, orderBy('createdAt', 'desc'));
+    
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+      const commentsData = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setComments(commentsData);
+    }, (err) => {
+      console.error("Comments subscribe error: ", err);
+    });
 
-    const handleCommentSubmit = useCallback(async ({ newComment, userName }) => {
-        setError('');
-        setIsSubmitting(true);
+    return () => unsubscribe();
+  }, []);
+
+  const handleCommentSubmit = useCallback(async ({ newComment, userName }) => {
+    setError('');
+    setIsSubmitting(true);
+    
+    try {
+      await addDoc(collection(db, 'portfolio-comments'), {
+        content: newComment,
+        userName,
+        createdAt: serverTimestamp(),
+      });
+    } catch (error) {
+      setError('Failed to submit comment. Please check internet connection.');
+      console.error('Error adding comment: ', error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  }, []);
+
+  const formatDate = useCallback((timestamp) => {
+    if (!timestamp) return 'Just now';
+    let date;
+    try {
+      date = timestamp.toDate();
+    } catch (e) {
+      date = new Date(timestamp);
+    }
+    const now = new Date();
+    const diffMinutes = Math.floor((now - date) / (1000 * 60));
+    const diffHours = Math.floor(diffMinutes / 60);
+    const diffDays = Math.floor(diffHours / 24);
+
+    if (diffMinutes < 1) return 'Just now';
+    if (diffMinutes < 60) return `${diffMinutes}m ago`;
+    if (diffHours < 24) return `${diffHours}h ago`;
+    if (diffDays < 7) return `${diffDays}d ago`;
+
+    return new Intl.DateTimeFormat('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    }).format(date);
+  }, []);
+
+  return (
+    <div className="w-full bg-slate-50/50 dark:bg-white/[0.01] rounded-2xl overflow-hidden border border-slate-200 dark:border-white/5 flex flex-col h-full shadow-sm">
+      <div className="p-4 border-b border-slate-200 dark:border-white/5 bg-slate-100/40 dark:bg-white/[0.02] flex items-center justify-between">
+        <div className="flex items-center gap-2.5">
+          <div className="p-2 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400">
+            <MessageCircle className="w-5 h-5" />
+          </div>
+          <h3 className="font-bold text-slate-800 dark:text-white text-base">
+            Guestbook <span className="text-xs font-semibold text-indigo-650 dark:text-indigo-400 ml-1">({comments.length} posts)</span>
+          </h3>
+        </div>
+      </div>
+
+      <div className="p-4 sm:p-5 flex-grow flex flex-col justify-between space-y-6">
+        {error && (
+          <div className="flex items-center gap-2 p-3 text-xs text-red-600 dark:text-red-400 bg-red-500/5 border border-red-500/10 rounded-xl">
+            <AlertCircle className="w-5 h-5 flex-shrink-0" />
+            <p className="font-semibold">{error}</p>
+          </div>
+        )}
         
-        try {
-            await addDoc(collection(db, 'portfolio-comments'), {
-                content: newComment,
-                userName,
-                createdAt: serverTimestamp(),
-            });
-        } catch (error) {
-            setError('Failed to post comment. Please try again.');
-            console.error('Error adding comment: ', error);
-        } finally {
-            setIsSubmitting(false);
-        }
-    }, []);
-
-    const formatDate = useCallback((timestamp) => {
-        if (!timestamp) return '';
-        const date = timestamp.toDate();
-        const now = new Date();
-        const diffMinutes = Math.floor((now - date) / (1000 * 60));
-        const diffHours = Math.floor(diffMinutes / 60);
-        const diffDays = Math.floor(diffHours / 24);
-
-        if (diffMinutes < 1) return 'Just now';
-        if (diffMinutes < 60) return `${diffMinutes}m ago`;
-        if (diffHours < 24) return `${diffHours}h ago`;
-        if (diffDays < 7) return `${diffDays}d ago`;
-
-        return new Intl.DateTimeFormat('en-US', {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric'
-        }).format(date);
-    }, []);
-
-    return (
-        <div className="w-full bg-gradient-to-b from-white/10 to-white/5 rounded-2xl overflow-hidden backdrop-blur-xl shadow-xl" data-aos="fade-up" data-aos-duration="1000">
-        <div className="p-6 border-b border-white/10" data-aos="fade-down" data-aos-duration="800">
-            <div className="flex items-center gap-3">
-                <div className="p-2 rounded-xl bg-indigo-500/20">
-                    <MessageCircle className="w-6 h-6 text-indigo-400" />
-                </div>
-                <h3 className="text-xl font-semibold text-white">
-                    Comments <span className="text-indigo-400">({comments.length})</span>
-                </h3>
-            </div>
+        <div>
+          <CommentForm onSubmit={handleCommentSubmit} isSubmitting={isSubmitting} />
         </div>
-        <div className="p-6 space-y-6">
-            {error && (
-                <div className="flex items-center gap-2 p-4 text-red-400 bg-red-500/10 border border-red-500/20 rounded-xl" data-aos="fade-in">
-                    <AlertCircle className="w-5 h-5 flex-shrink-0" />
-                    <p className="text-sm">{error}</p>
-                </div>
-            )}
-            
-            <div >
-                <CommentForm onSubmit={handleCommentSubmit} isSubmitting={isSubmitting} error={error} />
-            </div>
 
-            <div className="space-y-4 h-[300px] overflow-y-auto custom-scrollbar" data-aos="fade-up" data-aos-delay="200">
-                {comments.length === 0 ? (
-                    <div className="text-center py-8" data-aos="fade-in">
-                        <UserCircle2 className="w-12 h-12 text-indigo-400 mx-auto mb-3 opacity-50" />
-                        <p className="text-gray-400">No comments yet. Start the conversation!</p>
-                    </div>
-                ) : (
-                    comments.map((comment, index) => (
-                        <Comment 
-                            key={comment.id} 
-                            comment={comment} 
-                            formatDate={formatDate}
-                            index={index}
-                        />
-                    ))
-                )}
+        <div className="space-y-3 max-h-[260px] overflow-y-auto pr-1 scrollbar-thin">
+          {comments.length === 0 ? (
+            <div className="text-center py-10">
+              <UserCircle2 className="w-10 h-10 text-blue-550 dark:text-blue-400 mx-auto mb-2 opacity-50" />
+              <p className="text-slate-400 dark:text-slate-500 text-xs">No comments yet. Leave the first one!</p>
             </div>
+          ) : (
+            comments.map((comment) => (
+              <Comment 
+                key={comment.id} 
+                comment={comment} 
+                formatDate={formatDate}
+              />
+            ))
+          )}
         </div>
-        <style jsx>{`
-            .custom-scrollbar::-webkit-scrollbar {
-                width: 6px;
-            }
-            .custom-scrollbar::-webkit-scrollbar-track {
-                background: rgba(255, 255, 255, 0.05);
-                border-radius: 6px;
-            }
-            .custom-scrollbar::-webkit-scrollbar-thumb {
-                background: rgba(99, 102, 241, 0.5);
-                border-radius: 6px;
-            }
-            .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-                background: rgba(99, 102, 241, 0.7);
-            }
-        `}</style>
+      </div>
     </div>
-    );
+  );
 };
 
 export default Commenter;
