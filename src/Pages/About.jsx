@@ -4,11 +4,11 @@ import AOS from 'aos'
 import 'aos/dist/aos.css'
 import { SKILL_CATEGORIES } from '../constants/portfolioData'
 
-  // Header Section
+// Header Section
 const Header = memo(() => (
   <div className="text-center mb-10 md:mb-16">
     <div className="inline-block relative group">
-      <h2 
+      <h2
         className="text-4xl md:text-5xl font-bold text-slate-800 dark:text-transparent dark:bg-clip-text dark:bg-gradient-to-r dark:from-blue-600 dark:to-cyan-500"
         data-aos="zoom-in-up"
         data-aos-duration="600"
@@ -16,7 +16,7 @@ const Header = memo(() => (
         About Me
       </h2>
     </div>
-    <p 
+    <p
       className="mt-2 text-slate-500 dark:text-slate-400 max-w-2xl mx-auto text-sm sm:text-base flex items-center justify-center gap-1.5"
       data-aos="zoom-in-up"
       data-aos-duration="800"
@@ -31,8 +31,8 @@ const Header = memo(() => (
 // Profile Image with Glow
 const ProfileImage = memo(() => (
   <div className="flex justify-center lg:justify-end items-center p-4">
-    <div 
-      className="relative group" 
+    <div
+      className="relative group"
       data-aos="fade-up"
       data-aos-duration="1000"
     >
@@ -88,9 +88,9 @@ const SkillsSection = memo(() => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6">
         {SKILL_CATEGORIES.map((cat, idx) => (
-          <div 
+          <div
             key={idx}
-            data-aos="fade-up" 
+            data-aos="fade-up"
             data-aos-delay={idx * 100}
             className="p-6 rounded-2xl bg-white dark:bg-white/[0.02] border border-slate-200 dark:border-white/10 flex flex-col justify-between hover:border-slate-300 dark:hover:border-white/20 hover:shadow-lg dark:hover:shadow-none transition-all duration-300 backdrop-blur-md"
           >
@@ -104,17 +104,17 @@ const SkillsSection = memo(() => {
 
               <div className="space-y-2.5">
                 {cat.skills.map((skill, sIdx) => (
-                  <div 
+                  <div
                     key={sIdx}
                     className="flex items-center justify-between p-2 rounded-lg bg-slate-50 dark:bg-white/[0.02] border border-slate-100 dark:border-white/5 hover:bg-slate-100/60 dark:hover:bg-white/5 transition-colors duration-200"
                   >
                     <div className="flex items-center gap-2 min-w-0 flex-1 pr-2">
                       {skill.icon ? (
-                        <img 
-                          src={skill.icon} 
-                          alt={skill.name} 
+                        <img
+                          src={skill.icon}
+                          alt={skill.name}
                           className="w-5 h-5 object-contain flex-shrink-0 opacity-80"
-                          onError={(e) => { e.target.style.display = 'none'; }} 
+                          onError={(e) => { e.target.style.display = 'none'; }}
                         />
                       ) : (
                         <div className="w-1.5 h-1.5 rounded-full bg-blue-500 dark:bg-blue-400 flex-shrink-0 ml-1.5 mr-2" />
@@ -171,17 +171,17 @@ const AboutPage = () => {
 
   return (
     <div
-      className="h-auto py-20 text-slate-800 dark:text-white px-[5%] sm:px-[5%] lg:px-[10%]" 
+      className="h-auto py-20 text-slate-800 dark:text-white px-[5%] sm:px-[5%] lg:px-[10%]"
       id="About"
     >
       <Header />
 
       <div className="w-full mx-auto relative">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
-          
+
           {/* Biography Details */}
           <div className="lg:col-span-7 space-y-6 text-center lg:text-left">
-            <h3 
+            <h3
               className="text-2xl sm:text-3xl font-bold"
               data-aos="fade-right"
               data-aos-duration="1000"
@@ -191,25 +191,25 @@ const AboutPage = () => {
                 Abhay Ginoya
               </span>
             </h3>
-            
-            <div 
-              className="space-y-4 text-sm sm:text-base text-slate-600 dark:text-slate-350 leading-relaxed text-justify"
+
+            <div
+              className="space-y-4 text-sm sm:text-base text-slate-700 dark:text-gray-400 leading-relaxed text-justify"
               data-aos="fade-right"
               data-aos-duration="1200"
             >
               <p>
-                As a passionate **Mobile App Architect & Senior Flutter Developer** with 4+ years of professional engineering experience, I specialize in design-to-delivery processes for cross-platform applications. I build scalable mobile solutions and offline-first client syncing modules.
+                As a passionate <strong>Mobile App Architect & Senior Flutter Developer</strong> with 4+ years of professional engineering experience, I specialize in design-to-delivery processes for cross-platform applications. I build scalable mobile solutions and offline-first client syncing modules.
               </p>
               <p>
-                My technical experience includes designing relational layouts with **Drift** and object-oriented stores with **Isar** database. On backend architecture, I design Serverpod (Dart-native) configurations and Node.js solutions with PostgreSQL databases, resolving data sync collisions using vector metrics.
+                My technical experience includes designing relational layouts with <strong>Drift, Sqflite</strong> and object-oriented stores with <strong>Isar</strong> database. On backend architecture, I design <strong>Serverpod (Dart-native)</strong> configurations and <strong>Node.js</strong> solutions with <strong>PostgreSQL</strong> databases, resolving data sync collisions using vector metrics.
               </p>
               <p>
-                I prioritize writing maintainable code, separating UI components from database interfaces via **Clean Architecture** patterns. I partner closely with product owners, UI designers, and developer teams to design premium, state-of-the-art software systems.
+                I prioritize writing maintainable code, separating UI components from database interfaces via <strong>Clean Architeclture</strong> patterns. I partner closely with product owners, UI designers, and developer teams to design premium, state-of-the-art software systems.
               </p>
             </div>
 
             <div className="flex flex-col sm:flex-row items-center lg:items-start gap-4 pt-4 w-full">
-              <button 
+              <button
                 data-aos="fade-up"
                 data-aos-duration="800"
                 className="w-full sm:w-auto px-6 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 text-white font-semibold transition-all duration-300 hover:scale-105 flex items-center justify-center gap-2 shadow-lg hover:shadow-xl hover:shadow-blue-500/20"
@@ -217,8 +217,8 @@ const AboutPage = () => {
               >
                 <FileText className="w-5 h-5" /> Download CV
               </button>
-              <a 
-                href="#Portfolio" 
+              <a
+                href="#Portfolio"
                 onClick={(e) => handleScrollTo(e, 'Portfolio')}
                 className="w-full sm:w-auto px-6 py-3 rounded-xl border border-blue-500/30 hover:border-blue-500 text-blue-600 dark:text-cyan-400 font-semibold transition-all duration-300 hover:scale-105 flex items-center justify-center gap-2 hover:bg-blue-500/5 dark:hover:bg-cyan-500/10 cursor-pointer select-none"
                 data-aos="fade-up"
